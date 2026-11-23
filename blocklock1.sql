@@ -1,0 +1,29 @@
+SELECT /*+ ORDERED */
+  S.SID,
+  S.USERNAME,
+  S.PROGRAM,
+  S.STATUS,
+  SW.EVENT,
+  SW.WAIT_TIME WT,
+  SW.STATE,
+  SW.SECONDS_IN_WAIT S_I_W,
+  S.SQL_ID,
+  S.SQL_ADDRESS,
+  S.SQL_HASH_VALUE,
+  S.SQL_CHILD_NUMBER,
+  S.ROW_WAIT_OBJ# OBJ#,
+  S.ROW_WAIT_FILE# FILE#,
+  S.ROW_WAIT_BLOCK# BLOCK#,
+  S.ROW_WAIT_ROW# ROW#,
+  SW.P1,
+  SW.P2,
+  SW.P3
+FROM
+  V$SESSION_WAIT SW,
+  V$SESSION S
+WHERE
+  S.USERNAME IS NOT NULL
+  AND SW.SID=S.SID
+  AND SW.EVENT NOT LIKE '%SQL*Net%'
+  AND SW.EVENT NOT IN ('Streams AQ: waiting for messages in the queue', 'wait for unread message on broadcast channel');
+l

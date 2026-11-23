@@ -1,0 +1,1 @@
+dbca -silent -createDatabase -templateName General_Purpose.dbc -gdbname cdb2 -sid cdb2 -responseFile NO_VALUE -characterSet AL32UTF8 -memoryPercentage 30 -emConfiguration LOCAL -createAsContainerDatabase true -sysPassword ambasa -systemPassword ambasa -sampleSchema true
