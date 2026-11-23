@@ -1,0 +1,53 @@
+drop table ambasa.test_histo purge;
+create table ambasa.test_histo(c1 varchar(30), c2 varchar(10), c3 varchar(10), c4 varchar(3));
+ 
+begin
+ for i in 1..100000 loop
+ insert into ambasa.test_histo values(i,i,i,'AAA');
+commit;
+ end loop;
+ insert into ambasa.test_histo values('1000001','1000001','1000001','BBB');
+commit;
+ end;
+ /
+
+
+select c4, count(*) from ambasa.test_histo group by c4;
+
+PAUSE
+
+
+create index index_ambasa_t1 on ambasa.test_histo (c4);
+
+PAUSE
+
+set lines 200 pages 1000
+set sqlbl on
+col owner for a10
+col table_name for a15
+select owner,table_name,num_rows,blocks  from dba_tables where table_name='TEST_HISTO';
+
+
+set lines 200 pages 1000
+set sqlbl on
+col owner for a10
+col table_name for a15
+col column_name for a15
+select table_name,column_name,num_distinct,num_buckets,to_char(last_analyzed, 'dd.mm.yyyy hh24:mi:ss') last_analyzed,
+histogram from dba_tab_columns where table_name='TEST_HISTO';
+
+PAUSE
+
+exec dbms_stats.gather_table_stats('AMBASA','test_histo',cascade=>true,method_opt=>'for all columns size 1',estimate_percent=>100);
+
+PAUSE
+
+select owner,table_name,num_rows,blocks  from dba_tables where table_name='TEST_HISTO';
+
+PAUSE
+
+select table_name,column_name,num_distinct,num_buckets,to_char(last_analyzed, 'dd.mm.yyyy 
+hh24:mi:ss') last_analyzed,
+histogram from dba_tab_columns where table_name='TEST_HISTO';
+
+PAUSE

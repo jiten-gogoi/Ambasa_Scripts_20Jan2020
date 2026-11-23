@@ -1,0 +1,73 @@
+set sqlbl on
+set lines 200 pages 1000
+--Actually commit the transaction: use this query to find the open transactions: 
+
+select s.saddr,s.sid,s.username,s.osuser,s.status,s.PROGRAM,t.START_TIME from v$session s,v$transaction t where s.saddr = t.SES_ADDR order by t.start_time;
+
+l
+
+--DBA_CAPTURE
+
+col CAPTURE_NAME for a20;
+col QUEUE_NAME for a15;
+col START_SCN for 9999999999;
+col STATUS for a10;
+col CAPTURED_SCN for 9999999999;
+col APPLIED_SCN for 9999999999;
+col SOURCE_DATABASE for a10;
+col LOGMINER_ID for 9999999;
+col REQUIRED_CHECKPOINTSCN for a30;
+col STATUS_CHANGE_TIME for a15;
+col ERROR_NUMBER for a15;
+col ERROR_MESSAGE for a10;
+col START_TIME for a30
+col CAPTURE_TYPE for a10;
+SELECT CAPTURE_NAME, QUEUE_NAME, START_SCN, STATUS, CAPTURED_SCN, APPLIED_SCN, SOURCE_DATABASE,
+LOGMINER_ID, REQUIRED_CHECKPOINT_SCN, STATUS_CHANGE_TIME, ERROR_NUMBER, ERROR_MESSAGE,
+CAPTURE_TYPE, START_TIME FROM DBA_CAPTURE; 
+l
+
+--GOLDENGATE CAPTURE/Trans
+
+col state for a30;
+SELECT sid, serial#, capture#, CAPTURE_NAME, STARTUP_TIME, CAPTURE_TIME, state, SGA_USED, BYTES_OF_REDO_MINED,
+to_char(STATE_CHANGED_TIME, 'mm-dd-yy hh24:mi') STATE_CHANGED_TIME FROM V$GOLDENGATE_CAPTURE;
+l
+
+col capture_message_create_time for a30;
+col enqueue_message_create_time for a27;
+col available_message_create_time for a30;
+SELECT capture_name,
+to_char(capture_time, 'mm-dd-yy hh24:mi') capture_time,
+capture_message_number,
+to_char(capture_message_create_time ,'mm-dd-yy hh24:mi') capture_message_create_time,
+to_char(enqueue_time,'mm-dd-yy hh24:mi') enqueue_time,
+enqueue_message_number,
+to_char(enqueue_message_create_time, 'mm-dd-yy hh24:mi') enqueue_message_create_time,
+available_message_number,
+to_char(available_message_create_time,'mm-dd-yy hh24:mi') available_message_create_time
+FROM GV$GOLDENGATE_CAPTURE; 
+l
+
+SELECT component_name capture_name, count(*) open_transactions, sum(cumulative_message_count) LCRs
+FROM GV$GOLDENGATE_TRANSACTION WHERE component_type='CAPTURE' group by component_name;
+l
+--LOGMINER SESSIONS/STATS
+
+col db_name for a15;
+select INST_ID, SESSION_ID,SESSION_NAME,SESSION_STATE, DB_NAME,
+NUM_PROCESS,START_SCN,END_SCN,SPILL_SCN, PROCESSED_SCN, PREPARED_SCN,
+READ_SCN MAX_MEMORY_SIZE,USED_MEMORY_SIZE PINNED_TXN, PINNED_COMMITTED_TXN
+from GV$LOGMNR_SESSION;
+l
+SELECT SESSION_ID, NAME, VALUE FROM V$LOGMNR_STATS;
+l
+--OUTBOUND PROGRESS TABLE
+
+SELECT inst_id, sid, serial#, spid,server_name, startup_time, state,
+tztal_messages_sent, committed_data_only, last_sent_message_number,
+send_time, elapsed_send_time,bytes_sent,
+to_char(last_sent_message_create_time,'mm-dd-yy hh24:mi')
+last_sent_message_create_time,
+FROM GV$XSTREAM_OUTBOUND_SERVER; 
+l
