@@ -1,0 +1,3 @@
+select b.sid, b.serial#, a.spid, b.client_info 
+from  v$process a, v$session b where  a.addr=b.paddr and client_info 
+like  'rman%';

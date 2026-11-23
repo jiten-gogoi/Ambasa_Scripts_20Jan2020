@@ -1,0 +1,2 @@
+@$ORACLE_HOME/rdbms/admin/catalog.sql
+@$ORACLE_HOME/rdbms/admin/catproc.sql
