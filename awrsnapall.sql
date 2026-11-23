@@ -1,0 +1,4 @@
+col BEGIN_INTERVAL_TIME for a25
+col END_INTERVAL_TIME for a25
+set lines 200
+select SNAP_ID,BEGIN_INTERVAL_TIME,END_INTERVAL_TIME from DBA_HIST_SNAPSHOT where rownum <= 31 order by SNAP_ID;

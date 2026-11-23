@@ -1,0 +1,1 @@
+select client_name,JOB_NAME,JOB_STATUS,JOB_START_TIME,JOB_DURATION from DBA_AUTOTASK_JOB_HISTORY where JOB_START_TIME >systimestamp -7 ;
