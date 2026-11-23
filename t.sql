@@ -1,0 +1,2 @@
+select tablespace_name,extent_management,segment_space_management from dba_tablespaces;
+l
