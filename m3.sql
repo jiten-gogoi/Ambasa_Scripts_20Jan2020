@@ -1,0 +1,1 @@
+select a.file#, substr(a.name, 1, 50) file_name, a.status file_status, a.error, substr(a.tablespace_name, 1, 10) tablespace_name, b.status tablespace_status from v$datafile_header a, dba_tablespaces b where a.tablespace_name=b.tablespace_name /* and a.file#=&file#;
