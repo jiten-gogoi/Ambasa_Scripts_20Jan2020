@@ -1,0 +1,2 @@
+SELECT other_xml FROM gv$sql_plan  WHERE sql_id = '&sql_id' AND plan_hash_value =&plan_hash_value
+AND other_xml IS NOT NULL ORDER BY child_number, id;

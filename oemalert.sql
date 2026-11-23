@@ -1,0 +1,10 @@
+set lines 200
+col reason for a30
+col metric_type for a10 
+col host_id for a10
+SELECT REASON
+, METRIC_VALUE
+, MESSAGE_TYPE
+, TO_CHAR(CREATION_TIME,'DD-MON-YYYY HH24:MI:SS')
+, HOST_ID
+FROM SYS.DBA_OUTSTANDING_ALERTS;

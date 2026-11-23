@@ -1,0 +1,9 @@
+set lines 200
+set sqlbl on
+col TABLE_NAME FOR A20
+col PARTITION_NAME FOR A10
+col HIGH_VALUE for A10
+
+select TABLE_NAME,PARTITIONING_TYPE,SUBPARTITIONING_TYPE,PARTITION_COUNT from dba_part_tables 
+where owner = 'AMBASA';
+

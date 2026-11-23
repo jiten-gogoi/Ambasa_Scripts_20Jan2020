@@ -1,0 +1,6 @@
+set lines 200
+col TABLE_NAME FOR A20
+col PARTITION_NAME FOR A15
+col HIGH_VALUE for A20
+select TABLE_NAME, PARTITION_NAME,PARTITION_POSITION, HIGH_VALUE,TABLESPACE_NAME from dba_tab_partitions where table_owner='AMBASA';
+l

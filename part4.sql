@@ -1,0 +1,6 @@
+set lines 200
+col TABLE_NAME FOR A20
+col SUBPARTITION_NAME FOR A15
+col HIGH_VALUE for A20
+select TABLE_NAME,PARTITION_NAME,HIGH_VALUE,TABLESPACE_NAME from dba_tab_partitions where table_owner='AMBASA' and table_name='TEST_PART_RANGE_INTERVAL';
+l
