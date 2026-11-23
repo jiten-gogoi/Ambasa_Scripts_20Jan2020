@@ -1,0 +1,10 @@
+col event for a40
+select substr(w.event, 1, 28 ) event, sql_hash_value, count(*)
+from v$session_wait w, v$session s, v$process p
+where s.sid=w.sid
+and p.addr = s.paddr
+and s.username is not null
+and w.event not like '%pipe%'
+and w.event not like 'SQL*%'
+group by substr(w.event, 1, 28), sql_hash_value
+;
