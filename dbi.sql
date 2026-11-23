@@ -1,0 +1,1 @@
+select INCARNATION#,to_char(RESETLOGS_TIME,'dd-mm-yyyy HH24:MI:SS'),RESETLOGS_CHANGE#,to_char(PRIOR_RESETLOGS_TIME,'dd-mm-yyyy HH24:MI:SS'),PRIOR_INCARNATION#,PRIOR_RESETLOGS_CHANGE# from v$database_incarnation;

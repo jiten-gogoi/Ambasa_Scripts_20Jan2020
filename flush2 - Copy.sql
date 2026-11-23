@@ -1,0 +1,2 @@
+select 'exec sys.dbms_shared_pool.purge ('''||address||','||hash_value||''', ''C'');'
+from v$sqlarea where sql_id='&sql_id';
